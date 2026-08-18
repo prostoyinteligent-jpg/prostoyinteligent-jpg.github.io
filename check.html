@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Перевірка тексту на унікальність та AI — Kursova24</title>
+  <meta name="description" content="Базовий аналізатор тексту + рекомендації сервісів для перевірки унікальності та AI-генерації">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#0f172a;background:#f1f5f9}.nav{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;text-align:center;position:sticky;top:0;z-index:10}.nav a{margin:0 8px;color:#334155;text-decoration:none;font-weight:500;font-size:.9rem}.container{max-width:800px;margin:0 auto;padding:30px 20px}h1{font-size:1.6rem;margin-bottom:8px}.disclaimer{background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:14px 16px;margin:16px 0;font-size:.9rem;color:#92400e}textarea{width:100%;height:180px;padding:14px;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem;resize:vertical;margin:12px 0}button{background:#2563eb;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem}button:hover{background:#1d4ed8}.results{display:none;margin-top:24px;background:#fff;border-radius:12px;padding:20px;border:1px solid #e2e8f0}.metric{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9}.metric:last-child{border-bottom:none}.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.8rem;font-weight:600}.badge-ok{background:#dcfce7;color:#166534}.badge-warn{background:#fef3c7;color:#92400e}.badge-bad{background:#fee2e2;color:#991b1b}.section{margin-top:36px}.section h2{font-size:1.25rem;margin-bottom:12px}.tool{background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;border:1px solid #e2e8f0}.tool a{color:#2563eb;font-weight:500;text-decoration:none}.cta{background:#0f172a;color:#fff;border-radius:12px;padding:24px;text-align:center;margin-top:36px}.cta a{color:#fbbf24;font-weight:600}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html">Головна</a>
+    <a href="templates.html">Шаблони</a>
+    <a href="how-to.html">Як писати</a>
+    <a href="generator.html">Генератор</a>
+    <a href="check.html">Перевірка</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+
+  <div class="container">
+    <h1>Базова перевірка тексту</h1>
+    <p style="color:#64748b;margin-bottom:8px">Аналіз статистики + прості ознаки AI-стилю</p>
+
+    <div class="disclaimer">
+      <strong>Важливо:</strong> Це <u>не професійний</u> антиплагіат і не точний AI-детектор. 
+      Інструмент показує базову статистику та можливі ознаки. 
+      Для реальної перевірки використовуйте сервіси вашого університету (Unicheck, StrikePlagiarism тощо) та спеціалізовані AI-детектори.
+    </div>
+
+    <textarea id="text" placeholder="Вставте сюди текст роботи (бажано від 300 символів)..."></textarea>
+    <button onclick="analyze()">Проаналізувати</button>
+
+    <div class="results" id="results">
+      <h3 style="margin-bottom:12px">Результати аналізу</h3>
+      <div class="metric"><span>Слів</span><strong id="words">—</strong></div>
+      <div class="metric"><span>Символів (з пробілами)</span><strong id="chars">—</strong></div>
+      <div class="metric"><span>Речень</span><strong id="sentences">—</strong></div>
+      <div class="metric"><span>Середня довжина речення</span><strong id="avgLen">—</strong></div>
+      <div class="metric"><span>Різноманітність словника (TTR)</span><strong id="ttr">—</strong></div>
+      <div class="metric"><span>Можливі AI-ознаки</span><strong id="aiFlags">—</strong></div>
+      <div style="margin-top:14px" id="verdict"></div>
+    </div>
+
+    <div class="section">
+      <h2>Рекомендовані інструменти для перевірки</h2>
+
+      <div class="tool">
+        <strong>Унікальність (плагіат)</strong><br>
+        • Сервіс вашого університету (Unicheck / StrikePlagiarism / Antiplagiat) — найважливіший<br>
+        • <a href="https://content-watch.ru" target="_blank">Content-Watch</a> (є безкоштовний ліміт)<br>
+        • <a href="https://text.ru" target="_blank">Text.ru</a>
+      </div>
+
+      <div class="tool">
+        <strong>AI-детектори (безкоштовні / з лімітами)</strong><br>
+        • <a href="https://gptzero.me" target="_blank">GPTZero</a><br>
+        • <a href="https://www.zerogpt.com" target="_blank">ZeroGPT</a><br>
+        • <a href="https://copyleaks.com/ai-content-detector" target="_blank">Copyleaks AI Detector</a><br>
+        • <a href="https://sapling.ai/ai-content-detector" target="_blank">Sapling</a>
+      </div>
+
+      <div class="tool">
+        <strong>Порада:</strong> Жоден безкоштовний інструмент не дає 100% точності. 
+        Найкращий захист — писати якісний людський текст з власним аналізом і свіжими джерелами.
+      </div>
+    </div>
+
+    <div class="cta">
+      <p>Потрібна робота з високою унікальністю і без ознак AI?</p>
+      <p><a href="https://kursova24.com" target="_blank">Замовити на kursova24.com →</a></p>
+    </div>
+  </div>
+
+  <script>
+    const aiPhrases = [
+      "у сучасному світі", "важливо відзначити", "слід зазначити", "підводячи підсумок",
+      "на підставі вищевикладеного", "в рамках даного дослідження", "комплексний підхід",
+      "in conclusion", "it is important to note", "furthermore", "moreover", "in today's world",
+      "delve into", "tapestry", "landscape of", "play a crucial role", "it is worth noting"
+    ];
+
+    function analyze() {
+      const raw = document.getElementById('text').value.trim();
+      if (raw.length < 50) {
+        alert('Вставте довший текст (бажано від 300 символів)');
+        return;
+      }
+
+      const text = raw.replace(/\s+/g, ' ');
+      const words = text.split(/\s+/).filter(w => w.length > 0);
+      const wordCount = words.length;
+      const charCount = text.length;
+
+      // sentences
+      const sentences = text.split(/[.!?…]+/).map(s => s.trim()).filter(s => s.length > 5);
+      const sentCount = sentences.length || 1;
+      const avgLen = (wordCount / sentCount).toFixed(1);
+
+      // TTR
+      const unique = new Set(words.map(w => w.toLowerCase().replace(/[^a-zа-яєіїґ0-9]/gi, '')));
+      const ttr = (unique.size / wordCount * 100).toFixed(1);
+
+      // AI phrase flags
+      const lower = text.toLowerCase();
+      let flags = 0;
+      aiPhrases.forEach(p => { if (lower.includes(p)) flags++; });
+
+      // simple heuristics
+      let aiScore = 0;
+      if (avgLen > 22) aiScore += 1;
+      if (avgLen > 28) aiScore += 1;
+      if (ttr < 45) aiScore += 1;
+      if (flags >= 2) aiScore += 1;
+      if (flags >= 4) aiScore += 1;
+
+      document.getElementById('words').textContent = wordCount;
+      document.getElementById('chars').textContent = charCount;
+      document.getElementById('sentences').textContent = sentCount;
+      document.getElementById('avgLen').textContent = avgLen + ' слів';
+      document.getElementById('ttr').textContent = ttr + '%';
+      document.getElementById('aiFlags').textContent = flags > 0 ? flags + ' збігів' : 'не виявлено';
+
+      let verdict = '';
+      if (aiScore >= 3) {
+        verdict = '<span class="badge badge-bad">Висока ймовірність AI-стилю (за базовими ознаками)</span><br><small>Рекомендуємо перевірити професійним AI-детектором і переписати частину тексту.</small>';
+      } else if (aiScore >= 1) {
+        verdict = '<span class="badge badge-warn">Є окремі ознаки, схожі на AI</span><br><small>Варто переглянути довгі однотипні речення та шаблонні фрази.</small>';
+      } else {
+        verdict = '<span class="badge badge-ok">Базові ознаки AI-стилю не виражені</span><br><small>Це не гарантія. Обов’язково перевірте в сервісі університету.</small>';
+      }
+      document.getElementById('verdict').innerHTML = verdict;
+      document.getElementById('results').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
