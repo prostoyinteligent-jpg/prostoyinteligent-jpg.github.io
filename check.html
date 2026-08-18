@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Перевірка тексту на унікальність та AI — Kursova24</title>
-  <meta name="description" content="Базовий аналізатор тексту + рекомендації сервісів для перевірки унікальності та AI-генерації">
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#0f172a;background:#f1f5f9}.nav{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;text-align:center;position:sticky;top:0;z-index:10}.nav a{margin:0 8px;color:#334155;text-decoration:none;font-weight:500;font-size:.9rem}.container{max-width:800px;margin:0 auto;padding:30px 20px}h1{font-size:1.6rem;margin-bottom:8px}.disclaimer{background:#fef3c7;border:1px solid #f59e0b;border-radius:10px;padding:14px 16px;margin:16px 0;font-size:.9rem;color:#92400e}textarea{width:100%;height:180px;padding:14px;border:1px solid #cbd5e1;border-radius:10px;font-size:1rem;resize:vertical;margin:12px 0}button{background:#2563eb;color:#fff;border:none;padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem}button:hover{background:#1d4ed8}.results{display:none;margin-top:24px;background:#fff;border-radius:12px;padding:20px;border:1px solid #e2e8f0}.metric{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9}.metric:last-child{border-bottom:none}.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.8rem;font-weight:600}.badge-ok{background:#dcfce7;color:#166534}.badge-warn{background:#fef3c7;color:#92400e}.badge-bad{background:#fee2e2;color:#991b1b}.section{margin-top:36px}.section h2{font-size:1.25rem;margin-bottom:12px}.tool{background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;border:1px solid #e2e8f0}.tool a{color:#2563eb;font-weight:500;text-decoration:none}.cta{background:#0f172a;color:#fff;border-radius:12px;padding:24px;text-align:center;margin-top:36px}.cta a{color:#fbbf24;font-weight:600}
-  </style>
+  <title>Антиплагіат та AI-детектор онлайн — перевірка курсової | Kursova24</title>
+  <meta name="description" content="Безкоштовна перевірка тексту на повтори та ознаки AI-генерації. Працює у браузері, тримає великі тексти до 5 млн символів, підтримує DOCX, PDF і TXT.">
+  <link rel="stylesheet" href="assets/check.css">
 </head>
 <body>
   <nav class="nav">
@@ -20,119 +18,174 @@
   </nav>
 
   <div class="container">
-    <h1>Базова перевірка тексту</h1>
-    <p style="color:#64748b;margin-bottom:8px">Аналіз статистики + прості ознаки AI-стилю</p>
+    <h1>Антиплагіат і AI-детектор</h1>
+    <p class="lead">Аналіз повторів, стилометрії та ознак машинного тексту. Усе рахується локально у вашому браузері — текст нікуди не надсилається. Витримує цілу дипломну роботу: до 5 000 000 символів.</p>
 
     <div class="disclaimer">
-      <strong>Важливо:</strong> Це <u>не професійний</u> антиплагіат і не точний AI-детектор. 
-      Інструмент показує базову статистику та можливі ознаки. 
-      Для реальної перевірки використовуйте сервіси вашого університету (Unicheck, StrikePlagiarism тощо) та спеціалізовані AI-детектори.
+      <strong>Чесно про обмеження:</strong> це не офіційний антиплагіат. Тут немає доступу до баз університетів та індексу інтернету,
+      тому «унікальність» рахується за внутрішніми повторами й за тими джерелами, які ви додасте самі.
+      AI-score — стилометрична евристика, а не доказ. Фінальну перевірку робіть у системі вашого ВНЗ (Unicheck, StrikePlagiarism, Antiplagiat).
     </div>
 
-    <textarea id="text" placeholder="Вставте сюди текст роботи (бажано від 300 символів)..."></textarea>
-    <button onclick="analyze()">Проаналізувати</button>
+    <div class="tabs">
+      <button class="tab active" data-panel="text">1. Текст роботи</button>
+      <button class="tab" data-panel="sources">2. Джерела для порівняння</button>
+      <button class="tab" data-panel="settings">3. Налаштування</button>
+    </div>
 
+    <!-- панель: текст -->
+    <div class="card" data-panel-body="text">
+      <label class="field" for="text">Вставте текст або завантажте файл</label>
+      <textarea id="text" placeholder="Вставте сюди весь текст роботи. Можна цілий диплом — обробка йде у фоновому потоці, сторінка не зависає."></textarea>
+      <div class="counter" id="counter">0 символів</div>
+      <div class="row" style="margin-top:8px">
+        <input type="file" id="mainFile" accept=".txt,.md,.docx,.pdf,.rtf,.csv,.tex,.html,.htm" multiple>
+        <span class="hint" id="mainFileHint"></span>
+      </div>
+      <p class="hint" style="margin-top:6px">Формати: TXT, MD, DOCX, PDF, RTF, HTML. Кілька файлів об’єднуються в один текст.</p>
+    </div>
+
+    <!-- панель: джерела -->
+    <div class="card" data-panel-body="sources" style="display:none">
+      <h3>Порівняння з джерелами</h3>
+      <p class="hint">Додайте методичку, чужу роботу, статті або власні попередні роботи — інструмент знайде дослівні збіги та покаже відсоток покриття. Так працює справжній антиплагіат, тільки база тут ваша.</p>
+      <label class="field" for="srcText">Вставити текст джерела</label>
+      <textarea id="srcText" class="small" placeholder="Текст статті, методички або іншої роботи…"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button class="btn btn-sec btn-sm" id="addSrcText">Додати як джерело</button>
+        <input type="file" id="srcFile" accept=".txt,.md,.docx,.pdf,.rtf,.csv,.tex,.html,.htm" multiple>
+        <span class="hint" id="srcFileHint"></span>
+        <button class="btn btn-sec btn-sm" id="clearSrc">Очистити всі</button>
+      </div>
+      <div id="sourceList" style="margin-top:12px"></div>
+    </div>
+
+    <!-- панель: налаштування -->
+    <div class="card" data-panel-body="settings" style="display:none">
+      <h3>Чутливість пошуку повторів</h3>
+      <label class="field" for="sensitivity">Мінімальна довжина збігу (у словах)</label>
+      <select id="sensitivity">
+        <option value="4">4 слова — максимальна чутливість (більше «шуму»)</option>
+        <option value="5">5 слів — суворо</option>
+        <option value="6" selected>6 слів — рекомендовано</option>
+        <option value="8">8 слів — лише явні дослівні запозичення</option>
+        <option value="10">10 слів — тільки великі блоки</option>
+      </select>
+      <p class="hint" style="margin-top:8px">Університетські системи зазвичай реагують на збіги від 5–8 слів. Менше значення — більше знайдених фрагментів, але й більше випадкових.</p>
+    </div>
+
+    <div class="row">
+      <button class="btn" id="runBtn">Проаналізувати текст</button>
+      <span class="hint">Обробка 1 млн символів займає близько секунди.</span>
+    </div>
+    <div class="err" id="error"></div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress"><span id="progressBar"></span></div>
+      <div class="progress-label" id="progressLabel"></div>
+    </div>
+
+    <!-- результати -->
     <div class="results" id="results">
-      <h3 style="margin-bottom:12px">Результати аналізу</h3>
-      <div class="metric"><span>Слів</span><strong id="words">—</strong></div>
-      <div class="metric"><span>Символів (з пробілами)</span><strong id="chars">—</strong></div>
-      <div class="metric"><span>Речень</span><strong id="sentences">—</strong></div>
-      <div class="metric"><span>Середня довжина речення</span><strong id="avgLen">—</strong></div>
-      <div class="metric"><span>Різноманітність словника (TTR)</span><strong id="ttr">—</strong></div>
-      <div class="metric"><span>Можливі AI-ознаки</span><strong id="aiFlags">—</strong></div>
-      <div style="margin-top:14px" id="verdict"></div>
+      <div class="card" style="margin-top:20px">
+        <h2>Статистика тексту</h2>
+        <div class="grid" id="kpis"></div>
+      </div>
+
+      <div class="card">
+        <h2>Антиплагіат: внутрішні повтори</h2>
+        <div class="score">
+          <div class="dial bg-ok" id="plagDial"></div>
+          <div style="flex:1;min-width:240px" id="plagSummary"></div>
+        </div>
+        <details open style="margin-top:14px">
+          <summary>Найдовші дослівні повтори</summary>
+          <div style="margin-top:10px" id="blocks"></div>
+        </details>
+        <details>
+          <summary>Найчастіші слова (ознака «водянистого» тексту)</summary>
+          <table style="margin-top:8px"><thead><tr><th>Слово</th><th>Разів</th><th>Частка</th></tr></thead><tbody id="topWords"></tbody></table>
+        </details>
+      </div>
+
+      <div class="card" id="sourcesResult" style="display:none">
+        <h2>Збіги з вашими джерелами</h2>
+        <div class="score">
+          <div class="dial bg-ok" id="srcDial"></div>
+          <div style="flex:1;min-width:240px">
+            <table><thead><tr><th>Джерело</th><th>Покриття</th><th>Jaccard</th><th>Слів у джерелі</th></tr></thead><tbody id="srcTable"></tbody></table>
+          </div>
+        </div>
+        <details open style="margin-top:14px">
+          <summary>Фрагменти, що збігаються</summary>
+          <div style="margin-top:10px" id="srcFragments"></div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>AI-детектор</h2>
+        <div class="score">
+          <div class="dial bg-ok" id="aiDial"></div>
+          <div style="flex:1;min-width:240px" id="aiVerdict"></div>
+        </div>
+        <h3 style="margin-top:18px">Розклад за ознаками</h3>
+        <table><thead><tr><th>Ознака</th><th>Ризик</th><th>Що робити</th></tr></thead><tbody id="signals"></tbody></table>
+        <details open style="margin-top:14px">
+          <summary>Абзаци з найвищим ризиком AI</summary>
+          <div style="margin-top:10px" id="paraRisk"></div>
+        </details>
+        <details>
+          <summary>Знайдені шаблонні фрази</summary>
+          <table style="margin-top:8px"><thead><tr><th>Фраза</th><th>Разів</th></tr></thead><tbody id="cliches"></tbody></table>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>Що виправити</h2>
+        <ul id="recommendations" style="padding-left:20px;font-size:.92rem"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Речення для зовнішньої перевірки</h2>
+        <p class="hint">Найінформативніші речення роботи. Натисніть пошуковик — якщо речення знайдеться дослівно, це потенційний плагіат.</p>
+        <div style="margin-top:12px" id="extSentences"></div>
+      </div>
+
+      <div class="card">
+        <h2>Звіт</h2>
+        <div class="row">
+          <button class="btn btn-sec btn-sm" id="downloadReport">Завантажити звіт (.md)</button>
+          <button class="btn btn-sec btn-sm" id="copyReport">Копіювати звіт</button>
+        </div>
+      </div>
     </div>
 
-    <div class="section">
-      <h2>Рекомендовані інструменти для перевірки</h2>
-
+    <div class="card" style="margin-top:26px">
+      <h2>Офіційні сервіси перевірки</h2>
       <div class="tool">
         <strong>Унікальність (плагіат)</strong><br>
-        • Сервіс вашого університету (Unicheck / StrikePlagiarism / Antiplagiat) — найважливіший<br>
-        • <a href="https://content-watch.ru" target="_blank">Content-Watch</a> (є безкоштовний ліміт)<br>
-        • <a href="https://text.ru" target="_blank">Text.ru</a>
+        • Система вашого університету (Unicheck / StrikePlagiarism / Antiplagiat) — вирішальна<br>
+        • <a href="https://content-watch.ru" target="_blank" rel="noopener">Content-Watch</a> — є безкоштовний ліміт<br>
+        • <a href="https://text.ru" target="_blank" rel="noopener">Text.ru</a>
       </div>
-
       <div class="tool">
-        <strong>AI-детектори (безкоштовні / з лімітами)</strong><br>
-        • <a href="https://gptzero.me" target="_blank">GPTZero</a><br>
-        • <a href="https://www.zerogpt.com" target="_blank">ZeroGPT</a><br>
-        • <a href="https://copyleaks.com/ai-content-detector" target="_blank">Copyleaks AI Detector</a><br>
-        • <a href="https://sapling.ai/ai-content-detector" target="_blank">Sapling</a>
+        <strong>AI-детектори</strong><br>
+        • <a href="https://gptzero.me" target="_blank" rel="noopener">GPTZero</a><br>
+        • <a href="https://www.zerogpt.com" target="_blank" rel="noopener">ZeroGPT</a><br>
+        • <a href="https://copyleaks.com/ai-content-detector" target="_blank" rel="noopener">Copyleaks AI Detector</a><br>
+        • <a href="https://sapling.ai/ai-content-detector" target="_blank" rel="noopener">Sapling</a>
       </div>
-
       <div class="tool">
-        <strong>Порада:</strong> Жоден безкоштовний інструмент не дає 100% точності. 
-        Найкращий захист — писати якісний людський текст з власним аналізом і свіжими джерелами.
+        <strong>Порада:</strong> жоден інструмент не дає 100% точності. Найкращий захист — власний аналіз, свіжі джерела, конкретні цифри й живий стиль.
       </div>
     </div>
 
     <div class="cta">
       <p>Потрібна робота з високою унікальністю і без ознак AI?</p>
-      <p><a href="https://kursova24.com" target="_blank">Замовити на kursova24.com →</a></p>
+      <p><a href="https://kursova24.com" target="_blank" rel="noopener">Замовити на kursova24.com →</a></p>
     </div>
   </div>
 
-  <script>
-    const aiPhrases = [
-      "у сучасному світі", "важливо відзначити", "слід зазначити", "підводячи підсумок",
-      "на підставі вищевикладеного", "в рамках даного дослідження", "комплексний підхід",
-      "in conclusion", "it is important to note", "furthermore", "moreover", "in today's world",
-      "delve into", "tapestry", "landscape of", "play a crucial role", "it is worth noting"
-    ];
-
-    function analyze() {
-      const raw = document.getElementById('text').value.trim();
-      if (raw.length < 50) {
-        alert('Вставте довший текст (бажано від 300 символів)');
-        return;
-      }
-
-      const text = raw.replace(/\s+/g, ' ');
-      const words = text.split(/\s+/).filter(w => w.length > 0);
-      const wordCount = words.length;
-      const charCount = text.length;
-
-      // sentences
-      const sentences = text.split(/[.!?…]+/).map(s => s.trim()).filter(s => s.length > 5);
-      const sentCount = sentences.length || 1;
-      const avgLen = (wordCount / sentCount).toFixed(1);
-
-      // TTR
-      const unique = new Set(words.map(w => w.toLowerCase().replace(/[^a-zа-яєіїґ0-9]/gi, '')));
-      const ttr = (unique.size / wordCount * 100).toFixed(1);
-
-      // AI phrase flags
-      const lower = text.toLowerCase();
-      let flags = 0;
-      aiPhrases.forEach(p => { if (lower.includes(p)) flags++; });
-
-      // simple heuristics
-      let aiScore = 0;
-      if (avgLen > 22) aiScore += 1;
-      if (avgLen > 28) aiScore += 1;
-      if (ttr < 45) aiScore += 1;
-      if (flags >= 2) aiScore += 1;
-      if (flags >= 4) aiScore += 1;
-
-      document.getElementById('words').textContent = wordCount;
-      document.getElementById('chars').textContent = charCount;
-      document.getElementById('sentences').textContent = sentCount;
-      document.getElementById('avgLen').textContent = avgLen + ' слів';
-      document.getElementById('ttr').textContent = ttr + '%';
-      document.getElementById('aiFlags').textContent = flags > 0 ? flags + ' збігів' : 'не виявлено';
-
-      let verdict = '';
-      if (aiScore >= 3) {
-        verdict = '<span class="badge badge-bad">Висока ймовірність AI-стилю (за базовими ознаками)</span><br><small>Рекомендуємо перевірити професійним AI-детектором і переписати частину тексту.</small>';
-      } else if (aiScore >= 1) {
-        verdict = '<span class="badge badge-warn">Є окремі ознаки, схожі на AI</span><br><small>Варто переглянути довгі однотипні речення та шаблонні фрази.</small>';
-      } else {
-        verdict = '<span class="badge badge-ok">Базові ознаки AI-стилю не виражені</span><br><small>Це не гарантія. Обов’язково перевірте в сервісі університету.</small>';
-      }
-      document.getElementById('verdict').innerHTML = verdict;
-      document.getElementById('results').style.display = 'block';
-    }
-  </script>
+  <script src="assets/check.js"></script>
 </body>
 </html>
