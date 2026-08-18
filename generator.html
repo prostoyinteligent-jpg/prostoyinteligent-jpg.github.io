@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Генератор титульного аркуша — Kursova24</title>
   <style>
-    *{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#0f172a;background:#f1f5f9}.nav{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;text-align:center}.nav a{margin:0 12px;color:#334155;text-decoration:none;font-weight:500}.container{max-width:700px;margin:0 auto;padding:30px 20px}label{display:block;margin:12px 0 4px;font-weight:500}input,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:1rem}button{margin-top:20px;padding:12px 24px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem}button:hover{background:#1d4ed8}#result{margin-top:30px;background:#fff;padding:24px;border-radius:12px;border:1px solid #e2e8f0;white-space:pre-wrap;font-family:'Times New Roman',serif;font-size:14px;line-height:1.5;display:none}.hint{font-size:.85rem;color:#64748b;margin-top:8px}
+    *{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#0f172a;background:#f1f5f9}.nav{background:#fff;border-bottom:1px solid #e2e8f0;padding:12px 20px;text-align:center;position:sticky;top:0}.nav a{margin:0 10px;color:#334155;text-decoration:none;font-weight:500;font-size:.95rem}.container{max-width:720px;margin:0 auto;padding:30px 20px}h1{margin-bottom:6px} .hint{color:#64748b;font-size:.9rem;margin-bottom:20px}label{display:block;margin:14px 0 4px;font-weight:500;font-size:.95rem}input,select{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:1rem}button{margin-top:18px;padding:12px 22px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem;margin-right:8px}button:hover{background:#1d4ed8}button.secondary{background:#64748b}#result{margin-top:28px;background:#fff;padding:28px;border-radius:12px;border:1px solid #e2e8f0;white-space:pre-wrap;font-family:'Times New Roman',Times,serif;font-size:15px;line-height:1.55;display:none;position:relative}.copy-btn{position:absolute;top:12px;right:12px;padding:6px 12px;font-size:.85rem;background:#0f172a;color:#fff;border:none;border-radius:6px;cursor:pointer}.success{color:#16a34a;font-size:.9rem;margin-top:8px;display:none}a.order{display:inline-block;margin-top:24px;color:#2563eb;font-weight:500}
   </style>
 </head>
 <body>
@@ -14,56 +14,120 @@
     <a href="templates.html">Шаблони</a>
     <a href="how-to.html">Як писати</a>
     <a href="generator.html">Генератор</a>
+    <a href="faq.html">FAQ</a>
   </nav>
   <div class="container">
     <h1>Генератор титульного аркуша</h1>
-    <p class="hint">Заповніть поля → отримаєте готовий текст для Word</p>
+    <p class="hint">Заповніть поля → натисніть «Згенерувати» → скопіюйте в Word</p>
+
     <label>Тип роботи</label>
     <select id="type">
       <option value="kursova">Курсова робота</option>
-      <option value="dyplom">Дипломна робота</option>
+      <option value="dyplom">Дипломна робота (бакалавр)</option>
+      <option value="magistr">Магістерська робота</option>
     </select>
-    <label>Університет</label>
-    <input id="uni" placeholder="Наприклад: Київський національний університет імені Тараса Шевченка">
+
+    <label>Університет (повна назва)</label>
+    <input id="uni" placeholder="Київський національний університет імені Тараса Шевченка">
+
+    <label>Факультет / Інститут</label>
+    <input id="fac" placeholder="Факультет економіки / Навчально-науковий інститут...">
+
     <label>Кафедра</label>
-    <input id="kaf" placeholder="Кафедра ...">
-    <label>Дисципліна / спеціальність</label>
-    <input id="disc" placeholder="">
+    <input id="kaf" placeholder="Кафедра фінансів">
+
+    <label>Дисципліна (для курсової)</label>
+    <input id="disc" placeholder="Економіка підприємства">
+
     <label>Тема роботи</label>
-    <input id="tema" placeholder="Повна назва теми">
+    <input id="tema" placeholder="Повна назва теми без лапок">
+
     <label>ПІБ студента</label>
-    <input id="pib" placeholder="Прізвище Ім’я По батькові">
-    <label>Курс, група</label>
-    <input id="grupa" placeholder="3 курс, група КН-31">
-    <label>ПІБ керівника</label>
-    <input id="ker" placeholder="Прізвище І. П.">
+    <input id="pib" placeholder="Шевченко Олена Іванівна">
+
+    <label>Курс і група</label>
+    <input id="grupa" placeholder="4 курс, група ЕК-41">
+
+    <label>ПІБ керівника + звання</label>
+    <input id="ker" placeholder="к.е.н., доцент Петренко І. П.">
+
     <label>Місто</label>
     <input id="misto" value="Київ">
+
+    <label>Рік</label>
+    <input id="year" value="2026">
+
     <button onclick="generate()">Згенерувати</button>
-    <div id="result"></div>
-    <p class="hint" style="margin-top:20px">Скопіюйте текст і вставте в Word. Встановіть Times New Roman 14, інтервал 1.5, поля 30/15/20 мм.</p>
-    <p style="margin-top:20px"><a href="https://kursova24.com">Потрібна готова робота? → kursova24.com</a></p>
+    <button class="secondary" onclick="clearAll()">Очистити</button>
+
+    <div id="result">
+      <button class="copy-btn" onclick="copyResult()">Скопіювати</button>
+      <div id="resultText"></div>
+    </div>
+    <div id="copySuccess" class="success">Скопійовано!</div>
+
+    <a class="order" href="https://kursova24.com" target="_blank">Потрібна готова робота з гарантією? → kursova24.com</a>
   </div>
+
   <script>
-    function generate(){
+    function generate() {
       const type = document.getElementById('type').value;
-      const uni = document.getElementById('uni').value || 'НАЗВА УНІВЕРСИТЕТУ';
-      const kaf = document.getElementById('kaf').value || 'Кафедра ________________';
-      const disc = document.getElementById('disc').value || '________________';
-      const tema = document.getElementById('tema').value || 'НАЗВА ТЕМИ';
-      const pib = document.getElementById('pib').value || 'Прізвище Ім’я По батькові';
-      const grupa = document.getElementById('grupa').value || '___ курс, група ______';
-      const ker = document.getElementById('ker').value || 'Прізвище І. П.';
-      const misto = document.getElementById('misto').value || 'Київ';
-      let text = '';
-      if(type === 'kursova'){
-        text = `МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ\n${uni.toUpperCase()}\n${kaf}\n\n\nКУРСОВА РОБОТА\nз дисципліни «${disc}»\n\nна тему:\n«${tema}»\n\n\n\nСтудента (ки) ${grupa}\n${pib}\n\nКерівник:\n${ker}\n\n\n\n${misto} – 2026`;
-      } else {
-        text = `МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ\n${uni.toUpperCase()}\n${kaf}\n\n\nДИПЛОМНА РОБОТА\nна здобуття освітнього ступеня «бакалавр»\n\nна тему:\n«${tema}»\n\n\n\nВиконав(ла): ${grupa}\n${pib}\n\nКерівник:\n${ker}\n\n\n\n${misto} – 2026`;
+      const uni = document.getElementById('uni').value.trim() || 'НАЗВА УНІВЕРСИТЕТУ';
+      const fac = document.getElementById('fac').value.trim();
+      const kaf = document.getElementById('kaf').value.trim() || 'Кафедра ________________';
+      const disc = document.getElementById('disc').value.trim() || '________________';
+      const tema = document.getElementById('tema').value.trim() || 'НАЗВА ТЕМИ';
+      const pib = document.getElementById('pib').value.trim() || 'Прізвище Ім’я По батькові';
+      const grupa = document.getElementById('grupa').value.trim() || '___ курс, група ______';
+      const ker = document.getElementById('ker').value.trim() || 'Прізвище І. П.';
+      const misto = document.getElementById('misto').value.trim() || 'Київ';
+      const year = document.getElementById('year').value.trim() || '2026';
+
+      let title = 'КУРСОВА РОБОТА';
+      let subtitle = `з дисципліни «${disc}»`;
+      let studentLine = `Студента (ки) ${grupa}`;
+
+      if (type === 'dyplom') {
+        title = 'ДИПЛОМНА РОБОТА';
+        subtitle = 'на здобуття освітнього ступеня «бакалавр»';
+        studentLine = `Виконав(ла): ${grupa}`;
+      } else if (type === 'magistr') {
+        title = 'МАГІСТЕРСЬКА РОБОТА';
+        subtitle = 'на здобуття освітнього ступеня «магістр»';
+        studentLine = `Виконав(ла): ${grupa}`;
       }
-      const res = document.getElementById('result');
-      res.style.display = 'block';
-      res.textContent = text;
+
+      let text = 'МІНІСТЕРСТВО ОСВІТИ І НАУКИ УКРАЇНИ\n';
+      text += uni.toUpperCase() + '\n';
+      if (fac) text += fac + '\n';
+      text += kaf + '\n\n\n';
+      text += title + '\n';
+      text += subtitle + '\n\n';
+      text += 'на тему:\n';
+      text += '«' + tema + '»\n\n\n\n';
+      text += studentLine + '\n';
+      text += pib + '\n\n';
+      text += 'Керівник:\n' + ker + '\n\n\n\n';
+      text += misto + ' – ' + year;
+
+      document.getElementById('resultText').textContent = text;
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('copySuccess').style.display = 'none';
+    }
+
+    function copyResult() {
+      const text = document.getElementById('resultText').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        document.getElementById('copySuccess').style.display = 'block';
+        setTimeout(() => document.getElementById('copySuccess').style.display = 'none', 2000);
+      });
+    }
+
+    function clearAll() {
+      ['uni','fac','kaf','disc','tema','pib','grupa','ker'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('misto').value = 'Київ';
+      document.getElementById('year').value = '2026';
+      document.getElementById('result').style.display = 'none';
     }
   </script>
 </body>
